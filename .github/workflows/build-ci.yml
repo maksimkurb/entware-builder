@@ -26,12 +26,6 @@ jobs:
 
       - name: Build Entware
         run: |
-          docker build -t entware-builder .
-          docker run --rm -v $(pwd)/Entware:/entware entware-builder make package/symlinks
-          docker run --rm -v $(pwd)/Entware:/entware entware-builder make -j$(nproc) toolchain/install
-
-      - name: Build Docker Image
-        run: |
           docker build -t ghcr.io/${{ github.repository_owner }}/entware-builder:${{ matrix.arch }} .
 
       - name: Login to GitHub Packages
