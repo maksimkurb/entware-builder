@@ -26,11 +26,11 @@ jobs:
 
       - name: Build Entware
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/entware-builder:${{ matrix.arch }} .
+          docker build --build-arg ENTWARE_ARCH="${{ matrix.arch }}" -t "ghcr.io/${{ github.repository_owner }}/entware-builder:${{ matrix.arch }}" .
 
       - name: Login to GitHub Packages
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push Docker Image
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/entware-builder:${{ matrix.arch }}
+          docker push "ghcr.io/${{ github.repository_owner }}/entware-builder:${{ matrix.arch }}" 
