@@ -53,13 +53,6 @@ RUN git clone --depth 1 https://github.com/Entware/Entware.git /opt/entware \
     && cd /opt/entware \
     && make package/symlinks
 
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-RUN useradd -c "OpenWrt Builder" -m -d /opt/entware -G sudo -s /bin/bash entware
-
-USER entware
-WORKDIR /opt/entware
-ENV HOME=/opt/entware
-
 ARG ENTWARE_ARCH=mipsel-3.4
 ENV ENTWARE_ARCH=$ENTWARE_ARCH
 
