@@ -60,6 +60,9 @@ USER entware
 WORKDIR /opt/entware
 ENV HOME=/opt/entware
 
+ARG ENTWARE_ARCH=mipsel-3.4
+ENV ENTWARE_ARCH=$ENTWARE_ARCH
+
 RUN cd /opt/entware \
     && cp -v configs/$ENTWARE_ARCH.config .config \
 		&& make -j$(nproc) toolchain/install
