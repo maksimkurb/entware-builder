@@ -61,20 +61,10 @@ RUN git clone --depth 1 https://github.com/Entware/Entware.git /home/me/Entware 
     && make package/symlinks
 
 ARG ENTWARE_ARCH=mipsel-3.4
-ARG ENTWARE_GCC_VERSION=13
 ENV ENTWARE_ARCH=$ENTWARE_ARCH
 
 RUN cd /home/me/Entware \
     && cp -v configs/$ENTWARE_ARCH.config .config \
-    && awk -v ver="$ENTWARE_GCC_VERSION" '\
-        !/^CONFIG_GCC_USE_VERSION_[0-9]+=y$/ && \
-        !/^# CONFIG_GCC_USE_VERSION_[0-9]+ is not set$/ { print } \
-        END { printf "CONFIG_GCC_USE_VERSION_%s=y\n", ver }' .config > .config.tmp \
-    && mv .config.tmp .config \
-    && make defconfig \
-    && cat .config
-
-RUN cd /home/me/Entware \
-    && (make -j$(nproc) toolchain/install || make -j1 V=s toolchain/install)
+		&& make -j$(nproc) toolchain/install
 
 ENTRYPOINT /bin/bash
