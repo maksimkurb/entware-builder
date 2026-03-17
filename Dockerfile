@@ -66,11 +66,11 @@ ENV ENTWARE_ARCH=$ENTWARE_ARCH
 
 RUN cd /home/me/Entware \
     && cp -v configs/$ENTWARE_ARCH.config .config \
-    && sed -i \
-        -e '/^CONFIG_GCC_USE_VERSION_[0-9]\+=y$/d' \
-        -e '/^# CONFIG_GCC_USE_VERSION_[0-9]\+ is not set$/d' \
-        .config \
-    && printf 'CONFIG_GCC_USE_VERSION_%s=y\n' "$ENTWARE_GCC_VERSION" >> .config \
+    && awk -v ver="$ENTWARE_GCC_VERSION" '\
+        !/^CONFIG_GCC_USE_VERSION_[0-9]+=y$/ && \
+        !/^# CONFIG_GCC_USE_VERSION_[0-9]+ is not set$/ { print } \
+        END { printf "CONFIG_GCC_USE_VERSION_%s=y\n", ver }' .config > .config.tmp \
+    && mv .config.tmp .config \
     && make defconfig \
     && make -j$(nproc) toolchain/install
 
