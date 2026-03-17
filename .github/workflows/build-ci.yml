@@ -27,6 +27,7 @@ jobs:
       - name: Build Entware
         run: |
           docker build \
+            --progress=plain \
             --build-arg ENTWARE_ARCH="${{ matrix.arch }}" \
             --build-arg ENTWARE_GCC_VERSION="13" \
             -t "ghcr.io/${{ github.repository_owner }}/entware-builder:${{ matrix.arch }}-gcc13" .

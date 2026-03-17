@@ -72,6 +72,9 @@ RUN cd /home/me/Entware \
         END { printf "CONFIG_GCC_USE_VERSION_%s=y\n", ver }' .config > .config.tmp \
     && mv .config.tmp .config \
     && make defconfig \
-    && make -j$(nproc) toolchain/install
+    && cat .config
+
+RUN cd /home/me/Entware \
+    && (make -j$(nproc) toolchain/install || make -j1 V=s toolchain/install)
 
 ENTRYPOINT /bin/bash
